@@ -20,7 +20,9 @@ const PersonForm = ({persons, setPersons, addMessage}) => {
           addMessage("SUCCESS", `O contato ${newName} foi editado.`)
           setPersons(persons.map(p => p.id !== person.id ? p : newPerson))
         }) 
-        .catch(error => addMessage("ERROR",`Alguma coisa deu errado ao editar o contato.`))
+        .catch(error => {
+          addMessage("ERROR",error.response.data.error)
+        })
     }
     else phoneServices // if there is not a person with same name, add she to the database 
       .addPerson(newName, newNumber)
@@ -28,7 +30,9 @@ const PersonForm = ({persons, setPersons, addMessage}) => {
         addMessage("SUCCESS", `O contato ${newName} foi adicionado.`)
         setPersons([...persons, newPerson]) // after adding to database, add to state
       })
-      .catch(error => addMessage("ERROR", `Algo deu errado ao adicionar o contato.`))
+      .catch(error => {
+        addMessage("ERROR",error.response.data.error)
+      })
     setNewName("")
     setNewNumber("")
   }
